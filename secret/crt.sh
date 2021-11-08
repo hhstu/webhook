@@ -1,9 +1,3 @@
-# shellcheck disable=SC1113
-#/bin/bash
-
-# https://www.jianshu.com/p/753478c90049 自行生成证书
-
-
 #!/bin/bash -e
 
 # * 为必改项
