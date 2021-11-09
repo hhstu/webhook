@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"k8s.io/api/admission/v1"
-	appsv1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/json"
 )
@@ -31,12 +31,12 @@ func main() {
 			}
 			c.JSON(400, admissionResponse)
 		} else {
-			var sts appsv1.StatefulSet
-			if err := json.Unmarshal(ar.Request.Object.Raw, &sts); err != nil {
+			var pod corev1.Pod
+			if err := json.Unmarshal(ar.Request.Object.Raw, &pod); err != nil {
 				panic(err)
 			}
 			jsonPatch := v1.PatchTypeJSONPatch
-			patch, err := updatePatch(&sts)
+			patch, err := updatePatch(&pod)
 			if err != nil {
 				panic(err)
 			}
@@ -60,13 +60,26 @@ func main() {
 	_ = r.RunTLS(":5678", "./secret/server.crt", "./secret/server.key")
 
 }
-func updatePatch(sts *appsv1.StatefulSet) ([]byte, error) {
-	annotations := sts.GetAnnotations()
+func updatePatch(pod *corev1.Pod) ([]byte, error) {
+	annotations := pod.GetAnnotations()
+	labels := pod.GetLabels()
 	annotations["aaaaa"] = "666"
+	labels["7777"] = "8888"
+
+	var stsName string
+	if len(pod.OwnerReferences) > 0 && pod.OwnerReferences[0].Kind == "StatefulSet" {
+		stsName = pod.OwnerReferences[0].Name
+	}
+	annotations["name"] = stsName
+
 	return json.Marshal([]patchOperation{{
 		Op:    "add",
 		Path:  "/metadata/annotations",
 		Value: annotations,
+	}, {
+		Op:    "add",
+		Path:  "/metadata/labels",
+		Value: labels,
 	}})
 }
 
