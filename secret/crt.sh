@@ -2,12 +2,12 @@
 
 # * 为必改项
 # * 更换为你自己的域名
-CN='' # 例如: demo.rancher.com
+CN='lc.com' # 例如: demo.rancher.com
 
 # 扩展信任IP或域名
 ## 一般ssl证书只信任域名的访问请求，有时候需要使用ip去访问server，那么需要给ssl证书添加扩展IP，
 ## 多个IP用逗号隔开。如果想多个域名访问，则添加扩展域名（SSL_DNS）,多个SSL_DNS用逗号隔开
-SSL_IP='' # 例如: 1.2.3.4
+SSL_IP='172.20.72.43' # 例如: 1.2.3.4
 SSL_DNS='' # 例如: demo.rancher.com
 
 # 国家名(2个字母的代号)
@@ -168,4 +168,5 @@ mv ${CN}.key server.key
 mv ${CN}.crt server.crt
 
 
+echo "5. base64 后证书"
 cat server.crt | base64 | tr -d '\n'
