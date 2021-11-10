@@ -1,0 +1,29 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+  generation: 1
+  labels:
+    app: es
+  name: es-webhook
+webhooks:
+  - clientConfig:
+      caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMrakNDQWVLZ0F3SUJBZ0lKQU5adzVkTHB2WldLTUEwR0NTcUdTSWIzRFFFQkN3VUFNQlF4RWpBUUJnTlYKQkFNTUNXTmhMV3hqTG1OdmJUQWVGdzB5TVRFeE1Ea3hNakV4TVRWYUZ3MHpNVEV4TURjeE1qRXhNVFZhTUJFeApEekFOQmdOVkJBTU1CbXhqTG1OdmJUQ0NBU0l3RFFZSktvWklodmNOQVFFQkJRQURnZ0VQQURDQ0FRb0NnZ0VCCkFLbkRsQ3ZQejJqM0dGbTc3MWI1bHZYOHNTSEtqTnlZWFdLQXVKaFhONDUydllnZmNQNXFNUWEwMlNDdFFCV1UKQy9KM2tLZmNUTkZNLzBzRnFhT2xuUVF0WXlhdEx5dFE1UURoYzFVSHNFYnMrWitVRzVHZS9KUmRPM2xta2dwNQpkaVRZWXNUKzRwbFhibmRFcVZFU2k3Z21MeVFOS2pDTEJoMGZYT3N5T0c3bUNjOVRBNVNFdTlFZ3hkenE1elovCnZIN1cxMGVBdGdCOW00eVRkU1pVcjQ2RjdyRnlvcUNPcStwb0tZK3FYY2h2NFBCYlBWS1pwSURNa2pvTHNmS3oKcWsyZjJpWkY3SktlM0tsVncvcktzSGxaU2N3QVdTbXR4RFZhci8rS3F4R0p0ZGRxbUpTNW9KVm95VU8xbG9JcgowN0lYOGxxNkFvTTEzRkl3cWVCVVNWVUNBd0VBQWFOU01GQXdDUVlEVlIwVEJBSXdBREFMQmdOVkhROEVCQU1DCkJlQXdIUVlEVlIwbEJCWXdGQVlJS3dZQkJRVUhBd0lHQ0NzR0FRVUZCd01CTUJjR0ExVWRFUVFRTUE2Q0JteGoKTG1OdmJZY0VDaHhrUWpBTkJna3Foa2lHOXcwQkFRc0ZBQU9DQVFFQVVUVjJoR0NTM0NYSVM4SjM1WnF4TW9QTQo0Y3dzVTdENFczMW9FWEtycEp4ZVRNTkNWMEt5VHUrSVd2ait0WDhpVGU3bjZBY1IyclpaenVrTElZbUQ2c29CCmRrUFQ5Rk1hYmY4M2MrdUprMXorRnFxOWRMYnEwYzJldnZDdUtTd2tHUU0wQi8rYTcxMXFkNGQwOUFmQmhUcysKVWllSmVuektxdnhaUDhMbkQ3ZVprejQyREF3c2Noc2hxR1dwTzFybUFQR3ErYkh5TnM1RHZzSlBsUk40ZFZzZApUYUJWanFSbEpEdG1xK1lsYlNDSXlwSnp2Q3RwejJCN2RVNVBCZ2lRQnk0cGgxY1V4WnJWQ3F6aWVRVXpLQWVHClYzalBYa0VwNjF0UmdpWU9sSk5rYlI4L3cyelg4Y1RFQkFKVU95cGZQaDAyZksyZ2hKeExIZzMxenZRVGpBPT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+      url: https://10.28.100.66:5678/webhook
+    failurePolicy: Ignore
+    name: elastic.lc.com
+    namespaceSelector:
+      matchLabels:
+        es: "true"
+    rules:
+      - apiGroups:
+          - core
+          - extensions
+          - ""
+        apiVersions:
+          - v1
+          - v1beta1
+        operations:
+          - CREATE
+        resources:
+          - pods
+    sideEffects: Unknown
